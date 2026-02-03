@@ -1,54 +1,80 @@
-# Git Setup Script
+# Git Repository Setup Script
 
-A lightweight Bash script to automate the process of cloning a Git repository and immediately installing its Node.js dependencies. It includes error handling, logging, and support for NVM (Node Version Manager).
+This Bash script automates cloning a Git repository and installing Node.js dependencies when applicable.
+
+It validates the input, checks required commands, clones the repository, and runs `npm install` if a `package.json` file is found.
+
+---
 
 ## Features
 
-- **Argument Validation:** Checks if a URL is provided and ensures it ends in `.git`.
-- **Pre-flight Checks:** Verifies that `git` is installed before proceeding.
-- **Safe Cloning:** Prevents overwriting if the repository folder already exists.
-- **Logging:** Redirects `git clone` output to `/tmp/file.log` to keep the terminal clean.
-- **NVM Integration:** Explicitly loads NVM to ensure `npm` works inside the script environment.
-- **Auto-Install:** Automatically detects `package.json` and runs `npm install`.
+- Validates required commands (`git`)
+- Accepts only `.git` repository URLs
+- Prevents overwriting existing directories
+- Clones the repository and logs output
+- Automatically installs Node.js dependencies if detected
+- Supports `nvm` if installed
+
+---
 
 ## Prerequisites
 
-- **Bash Shell:** Linux or macOS.
-- **Git:** Must be installed on the system.
-- **NVM:** The script assumes NVM is installed in `~/.nvm`.
+Ensure the following are installed:
 
-## Installation
+- **git**
+- **npm** (required only if the project uses Node.js)
+- **nvm** (optional)
 
-1. Save the script (e.g., as `gitsetup.sh`).
-2. Give the script execution permissions:
+---
+
+## Usage
 
 ```bash
-chmod +x gitsetup.sh
-
-Usage
-
-Run the script by passing a valid Git URL as the first argument:
-Bash
-
-./gitsetup.sh <repository_url>
+./script.sh <git-repository-url>
 
 Example
-Bash
 
-./gitsetup.sh [https://github.com/ritwik-pandey/GlobeQuest.git](https://github.com/ritwik-pandey/GlobeQuest.git)
+./script.sh https://github.com/username/project.git
 
-How It Works
+Script Workflow
 
-    Validation: Checks if the URL argument is present and ends with .git.
+    Checks if an argument is provided
 
-    Environment: Loads the user's NVM configuration to verify npm accessibility.
+    Validates that the repository URL ends with .git
 
-    Cloning: Clones the repo. Output is saved to /tmp/file.log.
+    Confirms git is installed
 
-    Dependencies: Navigates into the folder. If package.json is found, it triggers npm install.
+    Clones the repository
 
-Troubleshooting
+    Moves into the cloned directory
 
-    Permission Denied: Do not run this script with sudo if you are using NVM, as root does not have access to your NVM configuration.
+    Runs npm install if package.json exists
 
-    Log File: If cloning fails, check /tmp/file.log for the specific Git error message.
+Logging
+
+Git clone output is saved to:
+
+/tmp/file.log
+
+This helps with debugging if cloning fails.
+Error Handling
+
+The script exits with an error if:
+
+    No argument is provided
+
+    The URL does not end in .git
+
+    The repository directory already exists
+
+    git is not installed
+
+    Cloning fails
+
+Notes
+
+    If no package.json file is found, dependency installation is skipped.
+
+    The script safely exits on any critical failure.
+
+    nvm is automatically sourced if available.
