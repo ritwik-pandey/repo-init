@@ -27,8 +27,13 @@ then
 fi
 
 name=$(basename "$1" .git)
-branch=$2
-
+branch="main"
+if [ -z "$2" ]
+then
+	branch="main"
+else
+	branch="$2"
+fi
 check_commands "git"
 #check_commands "npm"
 
@@ -40,7 +45,7 @@ then
 	exit 1
 fi
 
-if git clone -b "$2" "$1" &> "$Log_File"; then
+if git clone -b "$branch" "$1" &> "$Log_File"; then
 	echo "Cloned.."
 else
 	echo "Oops.. error occurred!"
@@ -61,7 +66,19 @@ if [ -f "package.json" ]; then
 else
 	echo "No package.json"
 fi
-code $PWD
+
+echo "1. Open repo in vs code"
+echo "2. open repo in vim"
+
+read choice
+case $choice in 
+	1)
+		code $PWD;;
+	2)
+		vim $PWD;;
+	*)
+		echo "Invalid";;
+esac
 
 
 
