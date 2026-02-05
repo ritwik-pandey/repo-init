@@ -27,6 +27,7 @@ then
 fi
 
 name=$(basename "$1" .git)
+branch=$2
 
 check_commands "git"
 #check_commands "npm"
@@ -39,7 +40,7 @@ then
 	exit 1
 fi
 
-if git clone "$1" &> "$Log_File"; then
+if git clone -b "$2" "$1" &> "$Log_File"; then
 	echo "Cloned.."
 else
 	echo "Oops.. error occurred!"
@@ -60,3 +61,8 @@ if [ -f "package.json" ]; then
 else
 	echo "No package.json"
 fi
+code $PWD
+
+
+
+
